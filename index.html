@@ -7,27 +7,26 @@
         <svg height="500" width="500">
             <circle cx="250" cy="250" r="250" stroke="black" fill="none" />
             <circle cx="250" cy="250" r="150" stroke="black" fill="none" />
-            <line id="hours" x1="250" y1="250" x2="250" y2="250" style="stroke:brown;stroke-width:10;" />
+            <line id="hours" x1="250" y1="250" x2="250" y2="250" style="stroke:black;stroke-width:10;" />
             <line id="minutes" x1="250" y1="250" x2="250" y2="250" style="stroke:rgb(0,0,0);stroke-width:5;" />
             <line id="seconds" x1="250" y1="250" x2="250" y2="250" style="stroke:rgb(255,0,0);stroke-width:2;" />
         </svg>
         <h1><span id="hour"></span> : <span id="minute"></span> : <span id="second"></span></h1>
         <script>
             const twoPi = 2 * Math.PI;
-            const secondRad = twoPi / 60;
-            const minuteRad = twoPi / 3600;
-            const hourRad = twoPi / 43200;
-            const secHand = new Hand('seconds', 250, secondRad);
-            const minHand = new Hand('minutes', 250, minuteRad);
-            const hourHand = new Hand('hours', 150, hourRad);
+            const radians = new Map();
+            radians.set('second', twoPi / 60);
+            radians.set('minute', twoPi / 3600);
+            radians.set('hour', twoPi / 43200);
+            const secHand = new Hand('seconds', 250, radians.get('second'));
+            const minHand = new Hand('minutes', 250, radians.get('minute'));
+            const hourHand = new Hand('hours', 150, radians.get('hour'));
             const hands = new Hands(secHand, minHand, hourHand);
             const secCounter = document.getElementById('second');
             const minCounter = document.getElementById('minute');
             const hourCounter = document.getElementById('hour');
             const counter = () => Math.ceil((Date.now() / 1000)) - 18000; // Current second in EST.
-            window.onload = function() {
-                hands.place(counter());
-            }
+            window.onload = () => hands.place(counter());
             window.setInterval(() => {
                 count = counter();
                 hands.place(count);
