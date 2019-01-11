@@ -7,36 +7,49 @@
         <svg height="500" width="500">
             <circle cx="250" cy="250" r="250" stroke="black" fill="none" />
             <circle cx="250" cy="250" r="150" stroke="black" fill="none" />
-            <line id="hours" x1="250" y1="100" x2="250" y2="250" style="stroke:brown;stroke-width:10;" />
-            <line id="minutes" x1="250" y1="0" x2="250" y2="250" style="stroke:rgb(0,0,0);stroke-width:5;" />
-            <line id="seconds" x1="250" y1="0" x2="250" y2="250" style="stroke:rgb(255,0,0);stroke-width:2;" />
+            <line id="hours" x1="250" y1="250" x2="250" y2="250" style="stroke:brown;stroke-width:10;" />
+            <line id="minutes" x1="250" y1="250" x2="250" y2="250" style="stroke:rgb(0,0,0);stroke-width:5;" />
+            <line id="seconds" x1="250" y1="250" x2="250" y2="250" style="stroke:rgb(255,0,0);stroke-width:2;" />
         </svg>
-        <h1>Second: <span id="second"></span></h1>
-        <h1>Minute: <span id="minute"></span></h1>
-        <h1>Hour: <span id="hour"></span></h1>
+        <h1><span id="hour"></span> : <span id="minute"></span> : <span id="second"></span></h1>
         <script>
-            const secondRad = (2 * Math.PI) / 60;
-            const minuteRad = (2 * Math.PI) / 3600;
-            const hourRad = (2 * Math.PI) / 43200;
-            const secHand = document.getElementById('seconds');
-            const minHand = document.getElementById('minutes');
-            const hourHand = document.getElementById('hours');
+            const twoPi = 2 * Math.PI;
+            const secondRad = twoPi / 60;
+            const minuteRad = twoPi / 3600;
+            const hourRad = twoPi / 43200;
+            const secHand = new Hand('seconds', 250, secondRad);
+            const minHand = new Hand('minutes', 250, minuteRad);
+            const hourHand = new Hand('hours', 150, hourRad);
+            const hands = new Hands(secHand, minHand, hourHand);
             const secCounter = document.getElementById('second');
             const minCounter = document.getElementById('minute');
             const hourCounter = document.getElementById('hour');
-            let counter = Math.ceil((Date.now() / 1000)) - 18000;
+            const counter = () => Math.ceil((Date.now() / 1000)) - 18000; // Current second in EST.
+            window.onload = function() {
+                hands.place(counter());
+            }
             window.setInterval(() => {
-                secHand.setAttribute('x1', Math.sin(secondRad * counter) * 250 + 250);
-                secHand.setAttribute('y1', Math.cos(secondRad * counter) * -250 + 250);
-                minHand.setAttribute('x1', Math.sin(minuteRad * counter) * 250 + 250);
-                minHand.setAttribute('y1', Math.cos(minuteRad * counter) * -250 + 250);
-                hourHand.setAttribute('x1', Math.sin(hourRad * counter) * 150 + 250);
-                hourHand.setAttribute('y1', Math.cos(hourRad * counter) * -150 + 250);
-                secCounter.innerHTML = (counter % 60).toString();
-                minCounter.innerHTML = (counter / 60 % 60).toString();
-                hourCounter.innerHTML = (counter / 3600 % 12).toString();
-                counter ++;
+                count = counter();
+                hands.place(count);
+                secCounter.innerHTML = (count % 60).toString();
+                minCounter.innerHTML = Math.floor(count / 60 % 60).toString();
+                hourCounter.innerHTML = Math.floor(count / 3600 % 12).toString();
             }, 1000)
+            function Hand(id, length, radian) {
+                this.element = document.getElementById(id);
+                this.length = length;
+                this.radian = radian;
+            }
+            Hand.prototype.place = function(count) {
+                this.element.setAttribute('x2', Math.sin(this.radian * count) * this.length + 250);
+                this.element.setAttribute('y2', Math.cos(this.radian * count) * -1 * this.length + 250);
+            }
+            function Hands(...hands) {
+                this.hands = hands;
+            }
+            Hands.prototype.place = function(count) {
+                this.hands.forEach(hand => hand.place(count));
+            }
         </script>
     </body>
 </html>
