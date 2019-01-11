@@ -6,22 +6,37 @@
     <body>
         <svg height="500" width="500">
             <circle cx="250" cy="250" r="250" stroke="black" fill="none" />
+            <circle cx="250" cy="250" r="150" stroke="black" fill="none" />
+            <line id="hours" x1="250" y1="100" x2="250" y2="250" style="stroke:brown;stroke-width:10;" />
             <line id="minutes" x1="250" y1="0" x2="250" y2="250" style="stroke:rgb(0,0,0);stroke-width:5;" />
             <line id="seconds" x1="250" y1="0" x2="250" y2="250" style="stroke:rgb(255,0,0);stroke-width:2;" />
         </svg>
-        <h1 id="second"></h1>
-        <h1 id="minute"></h1>
+        <h1>Second: <span id="second"></span></h1>
+        <h1>Minute: <span id="minute"></span></h1>
+        <h1>Hour: <span id="hour"></span></h1>
         <script>
-            const second = (2 * Math.PI) / 60;
-            let startSecond = 1;
-            let x1, y1, x2, y2;
+            const secondRad = (2 * Math.PI) / 60;
+            const minuteRad = (2 * Math.PI) / 3600;
+            const hourRad = (2 * Math.PI) / 43200;
+            const secHand = document.getElementById('seconds');
+            const minHand = document.getElementById('minutes');
+            const hourHand = document.getElementById('hours');
+            const secCounter = document.getElementById('second');
+            const minCounter = document.getElementById('minute');
+            const hourCounter = document.getElementById('hour');
+            let counter = 1;
             window.setInterval(() => {
-                const secHand = document.getElementById('seconds');
-                secHand.setAttribute('x1', Math.sin(second * startSecond) * 250 + 250);
-                secHand.setAttribute('y1', Math.cos(second * startSecond) * -250 + 250);
-                document.getElementById('second').innerHTML = startSecond.toString();
-                startSecond ++;
-            }, 1000)
+                secHand.setAttribute('x1', Math.sin(secondRad * counter) * 250 + 250);
+                secHand.setAttribute('y1', Math.cos(secondRad * counter) * -250 + 250);
+                minHand.setAttribute('x1', Math.sin(minuteRad * counter) * 250 + 250);
+                minHand.setAttribute('y1', Math.cos(minuteRad * counter) * -250 + 250);
+                hourHand.setAttribute('x1', Math.sin(hourRad * counter) * 150 + 250);
+                hourHand.setAttribute('y1', Math.cos(hourRad * counter) * -150 + 250);
+                secCounter.innerHTML = (counter % 60).toString();
+                minCounter.innerHTML = (counter / 60 % 60).toString();
+                hourCounter.innerHTML = (counter / 3600).toString();
+                counter ++;
+            }, 4)
         </script>
     </body>
 </html>
