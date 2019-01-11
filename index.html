@@ -5,33 +5,23 @@
     </head>
     <body>
         <svg height="500" width="500">
-            <line id="seconds" x1="250" y1="0" x2="250" y2="250" style="stroke:rgb(255,0,0);stroke-width:2;" />
-            <line id="minutes" x1="250" y1="0" x2="250" y2="250" style="stroke:rgb(0,0,0);stroke-width:5;" />
             <circle cx="250" cy="250" r="250" stroke="black" fill="none" />
+            <line id="minutes" x1="250" y1="0" x2="250" y2="250" style="stroke:rgb(0,0,0);stroke-width:5;" />
+            <line id="seconds" x1="250" y1="0" x2="250" y2="250" style="stroke:rgb(255,0,0);stroke-width:2;" />
         </svg>
         <h1 id="second"></h1>
         <h1 id="minute"></h1>
         <script>
-            const second = (2 * Math.PI) / 300;
-            const minute = (2 * Math.PI) / 18000;
-            const now = new Date();
-            let sec = (now.getSeconds() + (now.getMilliseconds() * 0.001)) * 5;
+            const second = (2 * Math.PI) / 60;
+            let startSecond = 1;
             let x1, y1, x2, y2;
             window.setInterval(() => {
-                x1 = Math.cos((sec - 75) * second) * 250 + 250;
-                y1 = Math.sin((sec - 75) * second) * 250 + 250;
-                document.getElementById('seconds').setAttribute('x1', x1);
-                document.getElementById('seconds').setAttribute('y1', y1);
-                document.getElementById('second').innerHTML = (sec % 300) / 5;
-                sec++;
-            }, 200);
-            window.setInterval(() => {
-                x2 = Math.cos((sec - 4500) * minute) * 250 + 250;
-                y2 = Math.sin((sec - 4500) * minute) * 250 + 250;
-                document.getElementById('minutes').setAttribute('x1', x2);
-                document.getElementById('minutes').setAttribute('y1', y2);
-                document.getElementById('minute').innerHTML = Math.cos((sec - 4500) * minute) * 250 + 250
-            }, 200);
+                const secHand = document.getElementById('seconds');
+                secHand.setAttribute('x1', Math.sin(second * startSecond) * 250 + 250);
+                secHand.setAttribute('y1', Math.cos(second * startSecond) * -250 + 250);
+                document.getElementById('second').innerHTML = startSecond.toString();
+                startSecond ++;
+            }, 1000)
         </script>
     </body>
 </html>
