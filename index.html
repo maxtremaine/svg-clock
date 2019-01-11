@@ -13,7 +13,6 @@
             <line id="seconds" x1="250" y1="250" x2="250" y2="250" style="stroke:rgb(255,0,0);stroke-width:2;" />
             <circle cx="250" cy="250" r="5" stroke="none" fill="rgb(255,0,0)" />
         </svg>
-        <h1><span id="hour"></span> : <span id="minute"></span> : <span id="second"></span></h1>
         <script>
             const Pi = Math.PI;
             const twoPi = 2 * Pi;
@@ -25,17 +24,10 @@
             const minHand = new Hand('minutes', 230, radians.get('minute'));
             const hourHand = new Hand('hours', 140, radians.get('hour'));
             const hands = new Hands(secHand, minHand, hourHand);
-            const secCounter = document.getElementById('second');
-            const minCounter = document.getElementById('minute');
-            const hourCounter = document.getElementById('hour');
             const counter = () => Math.ceil((Date.now() / 1000)) - 18000; // Current second in EST.
             window.onload = () => hands.place(counter());
             window.setInterval(() => {
-                count = counter();
-                hands.place(count);
-                secCounter.innerHTML = (count % 60).toString();
-                minCounter.innerHTML = Math.floor(count / 60 % 60).toString();
-                hourCounter.innerHTML = Math.floor(count / 3600 % 12).toString();
+                hands.place(counter());
             }, 100)
             function Hand(id, length, radian, balanceLength) {
                 this.element = document.getElementById(id);
