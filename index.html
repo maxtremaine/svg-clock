@@ -35,7 +35,7 @@
                 secCounter.innerHTML = (count % 60).toString();
                 minCounter.innerHTML = Math.floor(count / 60 % 60).toString();
                 hourCounter.innerHTML = Math.floor(count / 3600 % 12).toString();
-            }, 1000)
+            }, 100)
             function Hand(id, length, radian, balanceLength) {
                 this.element = document.getElementById(id);
                 this.length = length;
