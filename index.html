@@ -15,12 +15,13 @@
         </svg>
         <h1><span id="hour"></span> : <span id="minute"></span> : <span id="second"></span></h1>
         <script>
-            const twoPi = 2 * Math.PI;
+            const Pi = Math.PI;
+            const twoPi = 2 * Pi;
             const radians = new Map();
             radians.set('second', twoPi / 60);
             radians.set('minute', twoPi / 3600);
             radians.set('hour', twoPi / 43200);
-            const secHand = new Hand('seconds', 240, radians.get('second'), 40);
+            const secHand = new Hand('seconds', 240, radians.get('second'), 60);
             const minHand = new Hand('minutes', 230, radians.get('minute'));
             const hourHand = new Hand('hours', 140, radians.get('hour'));
             const hands = new Hands(secHand, minHand, hourHand);
@@ -46,8 +47,8 @@
                 this.element.setAttribute('x2', Math.sin(this.radian * count) * this.length + 250);
                 this.element.setAttribute('y2', Math.cos(this.radian * count) * -1 * this.length + 250);
                 if(this.balanceLength) {
-                    this.element.setAttribute('x1', Math.sin(this.radian * count + Math.PI) * this.balanceLength + 250);
-                    this.element.setAttribute('y1', Math.cos(this.radian * count + Math.PI) * -1 * this.balanceLength + 250);
+                    this.element.setAttribute('x1', Math.sin(this.radian * count + Pi) * this.balanceLength + 250);
+                    this.element.setAttribute('y1', Math.cos(this.radian * count + Pi) * -1 * this.balanceLength + 250);
                 }
             }
             function Hands(...hands) {
