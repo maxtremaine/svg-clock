@@ -24,7 +24,7 @@
             const secCounter = document.getElementById('second');
             const minCounter = document.getElementById('minute');
             const hourCounter = document.getElementById('hour');
-            let counter = 1;
+            let counter = Math.ceil((Date.now() / 1000)) - 18000;
             window.setInterval(() => {
                 secHand.setAttribute('x1', Math.sin(secondRad * counter) * 250 + 250);
                 secHand.setAttribute('y1', Math.cos(secondRad * counter) * -250 + 250);
@@ -34,9 +34,9 @@
                 hourHand.setAttribute('y1', Math.cos(hourRad * counter) * -150 + 250);
                 secCounter.innerHTML = (counter % 60).toString();
                 minCounter.innerHTML = (counter / 60 % 60).toString();
-                hourCounter.innerHTML = (counter / 3600).toString();
+                hourCounter.innerHTML = (counter / 3600 % 12).toString();
                 counter ++;
-            }, 4)
+            }, 1000)
         </script>
     </body>
 </html>
