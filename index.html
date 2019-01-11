@@ -20,7 +20,7 @@
             radians.set('second', twoPi / 60);
             radians.set('minute', twoPi / 3600);
             radians.set('hour', twoPi / 43200);
-            const secHand = new Hand('seconds', 240, radians.get('second'));
+            const secHand = new Hand('seconds', 240, radians.get('second'), 40);
             const minHand = new Hand('minutes', 230, radians.get('minute'));
             const hourHand = new Hand('hours', 140, radians.get('hour'));
             const hands = new Hands(secHand, minHand, hourHand);
@@ -36,14 +36,19 @@
                 minCounter.innerHTML = Math.floor(count / 60 % 60).toString();
                 hourCounter.innerHTML = Math.floor(count / 3600 % 12).toString();
             }, 1000)
-            function Hand(id, length, radian) {
+            function Hand(id, length, radian, balanceLength) {
                 this.element = document.getElementById(id);
                 this.length = length;
                 this.radian = radian;
+                this.balanceLength = balanceLength;
             }
             Hand.prototype.place = function(count) {
                 this.element.setAttribute('x2', Math.sin(this.radian * count) * this.length + 250);
                 this.element.setAttribute('y2', Math.cos(this.radian * count) * -1 * this.length + 250);
+                if(this.balanceLength) {
+                    this.element.setAttribute('x1', Math.sin(this.radian * count + Math.PI) * this.balanceLength + 250);
+                    this.element.setAttribute('y1', Math.cos(this.radian * count + Math.PI) * -1 * this.balanceLength + 250);
+                }
             }
             function Hands(...hands) {
                 this.hands = hands;
