@@ -16,13 +16,9 @@
         <script>
             const Pi = Math.PI;
             const twoPi = 2 * Pi;
-            const radians = new Map();
-            radians.set('second', twoPi / 60);
-            radians.set('minute', twoPi / 3600);
-            radians.set('hour', twoPi / 43200);
-            const secHand = new Hand('seconds', 240, radians.get('second'), 60);
-            const minHand = new Hand('minutes', 230, radians.get('minute'));
-            const hourHand = new Hand('hours', 140, radians.get('hour'));
+            const secHand = new Hand('seconds', 240, twoPi / 60, 60);
+            const minHand = new Hand('minutes', 230, twoPi / 3600);
+            const hourHand = new Hand('hours', 140, twoPi / 43200);
             const hands = new Hands(secHand, minHand, hourHand);
             const counter = () => Math.ceil((Date.now() / 1000)) - 18000; // Current second in EST.
             window.onload = () => hands.place(counter());
