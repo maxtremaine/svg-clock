@@ -73,7 +73,7 @@
             <line id="minuteLume" x1="250" y1="250" x2="250" y2="250" style="stroke:wheat;stroke-width:8;" />
             <circle cx="250" cy="250" r="16" stroke="none" fill="grey" />
             <line id="seconds" x1="250" y1="250" x2="250" y2="250" style="stroke:silver;stroke-width:4;" />
-            <circle id="bubble" cx="250" cy="250" r="10" stroke="silver" fill="wheat" style="stroke-width:4;" />
+            <circle id="secondBubble" cx="250" cy="250" r="10" stroke="silver" fill="wheat" style="stroke-width:4;" />
             <circle cx="250" cy="250" r="5" stroke="none" fill="silver" />
             <circle cx="250" cy="250" r="2" stroke="none" fill="grey" />
         </svg>
@@ -86,7 +86,7 @@
             const hourHand = new Hand('hours', 140, twoPi / 43200);
             const hourLume = new Hand('hourLume', 130, twoPi / 43200, -40)
             const hands = new Hands(secHand, minHand, minLume, hourHand, hourLume);
-            const bubble = document.getElementById('bubble');
+            const bubble = document.getElementById('secondBubble');
             const counter = () => Math.ceil((Date.now() / 1000)) - 18000; // Current second in EST.
             window.onload = () => hands.place(counter());
             window.setInterval(() => {
