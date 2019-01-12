@@ -5,22 +5,26 @@
     </head>
     <body>
         <svg height="500" width="500">
-            <circle cx="250" cy="250" r="250" stroke="black" fill="none" />
-            <circle cx="250" cy="250" r="150" stroke="black" fill="none" />
-            <line id="hours" x1="250" y1="250" x2="250" y2="250" style="stroke:black;stroke-width:10;" />
-            <line id="minutes" x1="250" y1="250" x2="250" y2="250" style="stroke:rgb(0,0,0);stroke-width:5;" />
-            <circle cx="250" cy="250" r="10" stroke="none" fill="black" />
-            <line id="seconds" x1="250" y1="250" x2="250" y2="250" style="stroke:rgb(255,0,0);stroke-width:2;" />
-            <circle id="bubble" cx="250" cy="250" r="10" stroke="red" fill="black" />
-            <circle cx="250" cy="250" r="5" stroke="none" fill="rgb(255,0,0)" />
+            <circle cx="250" cy="250" r="250" stroke="black" fill="white" />
+            <circle cx="250" cy="250" r="150" stroke="grey" fill="white" />
+            <line id="hours" x1="250" y1="250" x2="250" y2="250" style="stroke:midnightblue;stroke-width:18;" />
+            <line id="hourLume" x1="250" y1="250" x2="250" y2="250" style="stroke:wheat;stroke-width:8;" />
+            <line id="minutes" x1="250" y1="250" x2="250" y2="250" style="stroke:midnightblue;stroke-width:14;" />
+            <line id="minuteLume" x1="250" y1="250" x2="250" y2="250" style="stroke:wheat;stroke-width:4;" />
+            <circle cx="250" cy="250" r="14" stroke="none" fill="midnightblue" />
+            <line id="seconds" x1="250" y1="250" x2="250" y2="250" style="stroke:silver;stroke-width:4;" />
+            <circle id="bubble" cx="250" cy="250" r="10" stroke="silver" fill="wheat" />
+            <circle cx="250" cy="250" r="5" stroke="none" fill="silver" />
         </svg>
         <script>
             const Pi = Math.PI;
             const twoPi = 2 * Pi;
             const secHand = new Hand('seconds', 240, twoPi / 60, 60);
             const minHand = new Hand('minutes', 230, twoPi / 3600);
+            const minLume = new Hand('minuteLume', 220, twoPi/3600, -40);
             const hourHand = new Hand('hours', 140, twoPi / 43200);
-            const hands = new Hands(secHand, minHand, hourHand);
+            const hourLume = new Hand('hourLume', 130, twoPi / 43200, -40)
+            const hands = new Hands(secHand, minHand, minLume, hourHand, hourLume);
             const bubble = document.getElementById('bubble');
             const counter = () => Math.ceil((Date.now() / 1000)) - 18000; // Current second in EST.
             window.onload = () => hands.place(counter());
