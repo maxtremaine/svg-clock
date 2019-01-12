@@ -11,6 +11,7 @@
             <line id="minutes" x1="250" y1="250" x2="250" y2="250" style="stroke:rgb(0,0,0);stroke-width:5;" />
             <circle cx="250" cy="250" r="10" stroke="none" fill="black" />
             <line id="seconds" x1="250" y1="250" x2="250" y2="250" style="stroke:rgb(255,0,0);stroke-width:2;" />
+            <circle id="bubble" cx="250" cy="250" r="10" stroke="red" fill="black" />
             <circle cx="250" cy="250" r="5" stroke="none" fill="rgb(255,0,0)" />
         </svg>
         <script>
@@ -20,17 +21,22 @@
             const minHand = new Hand('minutes', 230, twoPi / 3600);
             const hourHand = new Hand('hours', 140, twoPi / 43200);
             const hands = new Hands(secHand, minHand, hourHand);
+            const bubble = document.getElementById('bubble');
             const counter = () => Math.ceil((Date.now() / 1000)) - 18000; // Current second in EST.
-            window.onload = () => hands.place();
-            window.setInterval(() => hands.place(), 100); // Frequency of 10Hz.
+            window.onload = () => hands.place(counter());
+            window.setInterval(() => {
+                const count = counter();
+                hands.place(count)
+                bubble.setAttribute('cx', Math.sin(twoPi / 60 * count) * 150 + 250);
+                bubble.setAttribute('cy', Math.cos(twoPi / 60 * count) * -1 * 150 + 250);
+            }, 100); // Frequency of 10Hz.
             function Hand(id, length, radian, balanceLength) {
                 this.element = document.getElementById(id);
                 this.length = length;
                 this.radian = radian;
                 this.balanceLength = balanceLength;
             }
-            Hand.prototype.place = function() {
-                const count = counter();
+            Hand.prototype.place = function(count) {
                 this.element.setAttribute('x2', Math.sin(this.radian * count) * this.length + 250);
                 this.element.setAttribute('y2', Math.cos(this.radian * count) * -1 * this.length + 250);
                 if(this.balanceLength) {
@@ -41,8 +47,8 @@
             function Hands(...hands) {
                 this.hands = hands;
             }
-            Hands.prototype.place = function() {
-                this.hands.forEach(hand => hand.place());
+            Hands.prototype.place = function(count) {
+                this.hands.forEach(hand => hand.place(count));
             }
         </script>
     </body>
