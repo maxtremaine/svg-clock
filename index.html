@@ -67,6 +67,18 @@
             <line id="secondIndex58" x1="199.6853708221021" y1="13.288280622419052" x2="202.8040461843685" y2="27.960494633426123" style="stroke:white;stroke-width:2;" />
             <line id="secondIndex59" x1="224.70411188922765" y1="9.325701320877869" x2="226.27203883824248" y2="24.24352975140195" style="stroke:white;stroke-width:2;" />
             <line id="secondIndex60" x1="250" y1="8" x2="250" y2="23" style="stroke:white;stroke-width:6" />
+            <circle id="hourIndex1" cx="340" cy="94.11542731880104" r="15" style="fill:wheat;stroke:white;stroke-width:4;" />
+            <circle id="hourIndex2" cx="405.88457268119896" cy="160" r="15" style="fill:wheat;stroke:white;stroke-width:4;" />
+            <rect id="hourIndex3" x="400" y="240" width="60" height="20" style="fill:wheat;stroke:white;stroke-width:2;" />
+            <circle id="hourIndex4" cx="405.88457268119896" cy="339.99999999999994" r="15" style="fill:wheat;stroke:white;stroke-width:4;" />
+            <circle id="hourIndex5" cx="340.00000000000006" cy="405.88457268119896" r="15" style="fill:wheat;stroke:white;stroke-width:4;" />
+            <rect id="hourIndex6" x="240" y="400" width="20" height="60" style="fill:wheat;stroke:white;stroke-width:2;" />
+            <circle id="hourIndex7" cx="160.00000000000006" cy="405.88457268119896" r="15" style="fill:wheat;stroke:white;stroke-width:4;" />
+            <circle id="hourIndex8" cx="94.11542731880107" cy="340.0000000000001" r="15" style="fill:wheat;stroke:white;stroke-width:4;" />
+            <rect id="hourIndex9" x="40" y="240" width="60" height="20" style="fill:wheat;stroke:white;stroke-width:2;" />
+            <circle id="hourIndex10" cx="94.11542731880098" cy="160.0000000000001" r="15" style="fill:wheat;stroke:white;stroke-width:4;" />
+            <circle id="hourIndex11" cx="159.99999999999991" cy="94.1154273188011" r="15" style="fill:wheat;stroke:white;stroke-width:4;" />
+            <polygon id="hourIndex12" points="230,30 270,30 250,100" style="fill:wheat;stroke:white;stroke-width:2;" />
             <line id="hours" x1="250" y1="250" x2="250" y2="250" style="stroke:grey;stroke-width:22;" />
             <line id="hourLume" x1="250" y1="250" x2="250" y2="250" style="stroke:wheat;stroke-width:11;" />
             <line id="minutes" x1="250" y1="250" x2="250" y2="250" style="stroke:grey;stroke-width:16;" />
@@ -74,26 +86,30 @@
             <circle cx="250" cy="250" r="16" stroke="none" fill="grey" />
             <line id="seconds" x1="250" y1="250" x2="250" y2="250" style="stroke:silver;stroke-width:4;" />
             <circle id="secondBubble" cx="250" cy="250" r="10" stroke="silver" fill="wheat" style="stroke-width:4;" />
+            <circle id="secondBalance" cx="250" cy="250" r="8" style="fill:silver;stroke:none;" />
             <circle cx="250" cy="250" r="5" stroke="none" fill="silver" />
             <circle cx="250" cy="250" r="2" stroke="none" fill="grey" />
         </svg>
         <script>
             const Pi = Math.PI;
             const twoPi = 2 * Pi;
-            const secHand = new Hand('seconds', 240, twoPi / 60, 60);
-            const minHand = new Hand('minutes', 230, twoPi / 3600);
-            const minLume = new Hand('minuteLume', 220, twoPi/3600, -40);
-            const hourHand = new Hand('hours', 140, twoPi / 43200);
-            const hourLume = new Hand('hourLume', 130, twoPi / 43200, -40)
+            const secHand = new Hand('seconds', 240, twoPi / 300, 60);
+            const minHand = new Hand('minutes', 230, twoPi / 18000);
+            const minLume = new Hand('minuteLume', 220, twoPi/18000, -40);
+            const hourHand = new Hand('hours', 140, twoPi / 216000);
+            const hourLume = new Hand('hourLume', 130, twoPi / 216000, -40)
             const hands = new Hands(secHand, minHand, minLume, hourHand, hourLume);
             const bubble = document.getElementById('secondBubble');
-            const counter = () => Math.ceil((Date.now() / 1000)) - 18000; // Current second in EST.
+            const balance = document.getElementById('secondBalance');
+            const counter = () => Math.ceil((Date.now() / 200)) - 90000; // Current 1/5 second in EST.
             window.onload = () => hands.place(counter());
             window.setInterval(() => {
                 const count = counter();
                 hands.place(count)
-                bubble.setAttribute('cx', Math.sin(twoPi / 60 * count) * 150 + 250);
-                bubble.setAttribute('cy', Math.cos(twoPi / 60 * count) * -1 * 150 + 250);
+                bubble.setAttribute('cx', Math.sin(twoPi / 300 * count) * 150 + 250);
+                bubble.setAttribute('cy', Math.cos(twoPi / 300 * count) * -1 * 150 + 250);
+                balance.setAttribute('cx', Math.sin(twoPi / 300 * count + Pi) * 60 + 250);
+                balance.setAttribute('cy', Math.cos(twoPi / 300 * count + Pi) * -60 + 250);
             }, 100); // Frequency of 10Hz.
             function Hand(id, length, radian, balanceLength) {
                 this.element = document.getElementById(id);
