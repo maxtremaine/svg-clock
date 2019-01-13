@@ -69,16 +69,16 @@
             <line id="secondIndex60" x1="250" y1="8" x2="250" y2="23" style="stroke:white;stroke-width:6" />
             <circle id="hourIndex1" cx="340" cy="94.11542731880104" r="15" style="fill:wheat;stroke:white;stroke-width:4;" />
             <circle id="hourIndex2" cx="405.88457268119896" cy="160" r="15" style="fill:wheat;stroke:white;stroke-width:4;" />
-            <rect id="hourIndex3" x="400" y="240" width="60" height="20" style="fill:wheat;stroke:white;stroke-width:2;" />
+            <rect id="hourIndex3" x="400" y="240" width="60" height="20" style="fill:wheat;stroke:white;stroke-width:4;" />
             <circle id="hourIndex4" cx="405.88457268119896" cy="339.99999999999994" r="15" style="fill:wheat;stroke:white;stroke-width:4;" />
             <circle id="hourIndex5" cx="340.00000000000006" cy="405.88457268119896" r="15" style="fill:wheat;stroke:white;stroke-width:4;" />
-            <rect id="hourIndex6" x="240" y="400" width="20" height="60" style="fill:wheat;stroke:white;stroke-width:2;" />
+            <rect id="hourIndex6" x="240" y="400" width="20" height="60" style="fill:wheat;stroke:white;stroke-width:4;" />
             <circle id="hourIndex7" cx="160.00000000000006" cy="405.88457268119896" r="15" style="fill:wheat;stroke:white;stroke-width:4;" />
             <circle id="hourIndex8" cx="94.11542731880107" cy="340.0000000000001" r="15" style="fill:wheat;stroke:white;stroke-width:4;" />
-            <rect id="hourIndex9" x="40" y="240" width="60" height="20" style="fill:wheat;stroke:white;stroke-width:2;" />
+            <rect id="hourIndex9" x="40" y="240" width="60" height="20" style="fill:wheat;stroke:white;stroke-width:4;" />
             <circle id="hourIndex10" cx="94.11542731880098" cy="160.0000000000001" r="15" style="fill:wheat;stroke:white;stroke-width:4;" />
             <circle id="hourIndex11" cx="159.99999999999991" cy="94.1154273188011" r="15" style="fill:wheat;stroke:white;stroke-width:4;" />
-            <polygon id="hourIndex12" points="230,30 270,30 250,100" style="fill:wheat;stroke:white;stroke-width:2;" />
+            <polygon id="hourIndex12" points="230,40 270,40 250,110" style="fill:wheat;stroke:white;stroke-width:4;" />
             <line id="hours" x1="250" y1="250" x2="250" y2="250" style="stroke:grey;stroke-width:22;" />
             <line id="hourLume" x1="250" y1="250" x2="250" y2="250" style="stroke:wheat;stroke-width:11;" />
             <line id="minutes" x1="250" y1="250" x2="250" y2="250" style="stroke:grey;stroke-width:16;" />
@@ -102,15 +102,16 @@
             const bubble = document.getElementById('secondBubble');
             const balance = document.getElementById('secondBalance');
             const counter = () => Math.ceil((Date.now() / 200)) - 90000; // Current 1/5 second in EST.
-            window.onload = () => hands.place(counter());
-            window.setInterval(() => {
+            window.onload = setUp;
+            window.setInterval(setUp, 200); // Frequency of 2.5Hz.
+            function setUp() {
                 const count = counter();
                 hands.place(count)
                 bubble.setAttribute('cx', Math.sin(twoPi / 300 * count) * 150 + 250);
                 bubble.setAttribute('cy', Math.cos(twoPi / 300 * count) * -1 * 150 + 250);
                 balance.setAttribute('cx', Math.sin(twoPi / 300 * count + Pi) * 60 + 250);
                 balance.setAttribute('cy', Math.cos(twoPi / 300 * count + Pi) * -60 + 250);
-            }, 100); // Frequency of 10Hz.
+            }
             function Hand(id, length, radian, balanceLength) {
                 this.element = document.getElementById(id);
                 this.length = length;
