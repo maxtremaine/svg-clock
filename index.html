@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-
+            <link href="https://fonts.googleapis.com/css?family=Playfair+Display:500|Work+Sans:700" rel="stylesheet">
     </head>
     <body>
         <svg height="500" width="500">
@@ -79,8 +79,11 @@
             <circle id="hourIndex10" cx="94.11542731880098" cy="160.0000000000001" r="15" style="fill:wheat;stroke:white;stroke-width:4;" />
             <circle id="hourIndex11" cx="159.99999999999991" cy="94.1154273188011" r="15" style="fill:wheat;stroke:white;stroke-width:4;" />
             <polygon id="hourIndex12" points="230,40 270,40 250,110" style="fill:wheat;stroke:white;stroke-width:4;" />
-            <line id="hours" x1="250" y1="250" x2="250" y2="250" style="stroke:grey;stroke-width:22;" />
-            <line id="hourLume" x1="250" y1="250" x2="250" y2="250" style="stroke:wheat;stroke-width:11;" />
+            <text x="200" y="180" style="font-size:30;fill:white;font-family: 'Playfair Display', serif;">ROLEX</text>
+            <text x="200" y="200" style="font-size:10;fill:white;font-family: 'Work Sans', sans-serif;">OYSTER PERPETUAL</text>
+            <line id="hours" x1="250" y1="250" x2="250" y2="250" style="stroke:grey;stroke-width:16;" />
+            <line id="hourLume" x1="250" y1="250" x2="250" y2="250" style="stroke:wheat;stroke-width:8;" />
+            <circle id="hourBubble" cx="250" cy="250" r="25" style="stroke:grey;fill:wheat;stroke-width:6;" />
             <line id="minutes" x1="250" y1="250" x2="250" y2="250" style="stroke:grey;stroke-width:16;" />
             <line id="minuteLume" x1="250" y1="250" x2="250" y2="250" style="stroke:wheat;stroke-width:8;" />
             <circle cx="250" cy="250" r="16" stroke="none" fill="grey" />
@@ -93,24 +96,27 @@
         <script>
             const Pi = Math.PI;
             const twoPi = 2 * Pi;
-            const secHand = new Hand('seconds', 240, twoPi / 300, 60);
-            const minHand = new Hand('minutes', 230, twoPi / 18000);
-            const minLume = new Hand('minuteLume', 220, twoPi/18000, -40);
-            const hourHand = new Hand('hours', 140, twoPi / 216000);
-            const hourLume = new Hand('hourLume', 130, twoPi / 216000, -40)
+            const secHand = new Hand('seconds', 235, twoPi / 300, 60);
+            const minHand = new Hand('minutes', 215, twoPi / 18000);
+            const minLume = new Hand('minuteLume', 180, twoPi/18000, -40);
+            const hourHand = new Hand('hours', 100, twoPi / 216000);
+            const hourLume = new Hand('hourLume', 100, twoPi / 216000, -20)
             const hands = new Hands(secHand, minHand, minLume, hourHand, hourLume);
             const bubble = document.getElementById('secondBubble');
             const balance = document.getElementById('secondBalance');
+            const hourBubble = document.getElementById('hourBubble');
             const counter = () => Math.ceil((Date.now() / 200)) - 90000; // Current 1/5 second in EST.
             window.onload = setUp;
             window.setInterval(setUp, 200); // Frequency of 2.5Hz.
             function setUp() {
                 const count = counter();
                 hands.place(count)
-                bubble.setAttribute('cx', Math.sin(twoPi / 300 * count) * 150 + 250);
-                bubble.setAttribute('cy', Math.cos(twoPi / 300 * count) * -1 * 150 + 250);
+                bubble.setAttribute('cx', Math.sin(twoPi / 300 * count) * 135 + 250);
+                bubble.setAttribute('cy', Math.cos(twoPi / 300 * count) * -135 + 250);
                 balance.setAttribute('cx', Math.sin(twoPi / 300 * count + Pi) * 60 + 250);
                 balance.setAttribute('cy', Math.cos(twoPi / 300 * count + Pi) * -60 + 250);
+                hourBubble.setAttribute('cx', Math.sin(twoPi / 216000 * count) * 90 + 250);
+                hourBubble.setAttribute('cy', Math.cos(twoPi / 216000 * count) * -90 + 250);
             }
             function Hand(id, length, radian, balanceLength) {
                 this.element = document.getElementById(id);
